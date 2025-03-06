@@ -1,4 +1,4 @@
-import { eventLogsTypeAttr } from '@/constants/enumVariable';
+import { eventLogsTypeAttr } from '@/constants/constantsAttributes';
 import { Box, HStack, Icon, Spacer, Tag, Text, VStack } from '@chakra-ui/react'; //prettier-ignore
 import moment from 'moment';
 

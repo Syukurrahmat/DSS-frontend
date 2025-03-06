@@ -1,3 +1,5 @@
+import { Coordinate } from "./data-table";
+
 type UserDataPage = {
     userId: number;
     name: string;
@@ -32,7 +34,6 @@ type CompanyDataPage = {
     };
 }
 
-
 type NodeDataPage = {
     nodeId: number;
     companyId: number;
@@ -41,7 +42,7 @@ type NodeDataPage = {
     ownerId: number;
     description: string;
     address: string;
-    coordinate: number[];
+    coordinate: Coordinate;
     status: string;
     instalationDate: string | undefined;
     apiKey: string;
@@ -88,22 +89,4 @@ type ReportData = {
     }
 }
 
-
-type CompaniesSummary = {
-    all: number;
-    type: SummaryItem[];
-};
-
-type UsersSummary = {
-    all: number;
-    role: SummaryItem[]
-};
-
-type NodesSummary = {
-    all: number;
-    ownership: SummaryItem[];
-    status: SummaryItem[]
-};
-
-type SummaryItem = { value: string, count: number }
-
+ 

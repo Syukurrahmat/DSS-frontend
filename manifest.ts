@@ -1,0 +1,60 @@
+import { ManifestOptions } from 'vite-plugin-pwa';
+
+export default {
+	short_name: 'Pawana',
+	start_url: '/',
+	description:
+		'Solusi pemantauan dan pendukung keputusan tentang kualitas udara dan emisi gas rumah kaca.',
+	prefer_related_applications: true,
+	name: 'Pawana',
+	theme_color: '#378CE7',
+	background_color: '#378CE7',
+	icons: [
+		{
+			purpose: 'maskable any',
+			sizes: '48x48',
+			src: 'icons/maskable_icon_x48.png',
+			type: 'image/png',
+		},
+		{
+			purpose: 'maskable any',
+			sizes: '72x72',
+			src: 'icons/maskable_icon_x72.png',
+			type: 'image/png',
+		},
+		{
+			purpose: 'maskable any',
+			sizes: '96x96',
+			src: 'icons/maskable_icon_x96.png',
+			type: 'image/png',
+		},
+		{
+			purpose: 'maskable any',
+			sizes: '128x128',
+			src: 'icons/maskable_icon_x128.png',
+			type: 'image/png',
+		},
+		{
+			purpose: 'maskable any',
+			sizes: '192x192',
+			src: 'icons/maskable_icon_x192.png',
+			type: 'image/png',
+		},
+		{
+			purpose: 'maskable any',
+			sizes: '384x384',
+			src: 'icons/maskable_icon_x384.png',
+			type: 'image/png',
+		},
+		{
+			purpose: 'maskable any',
+			sizes: '512x512',
+			src: 'icons/maskable_icon_x512.png',
+			type: 'image/png',
+		},
+	],
+	orientation: 'any',
+	display: 'standalone',
+	dir: 'ltr',
+	lang: 'en-US',
+} as Partial<ManifestOptions>;

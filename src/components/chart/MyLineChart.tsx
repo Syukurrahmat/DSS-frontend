@@ -1,4 +1,4 @@
-import { eventLogsTypeAttr } from '@/constants/enumVariable';
+import { eventLogsTypeAttr } from '@/constants/constantsAttributes';
 import moment from 'moment';
 import { Area, AreaChart, Brush, CartesianGrid, Legend, ReferenceArea, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'; //prettier-ignore
 import { MultipleTrenTooltip, SingleTrenTooltip } from './customTooltip';
@@ -6,7 +6,7 @@ import {
 	getCH4Properties,
 	getCO2Properties,
 	getISPUProperties,
-} from '@/utils/common.utils';
+} from '@/lib/common.utils';
 import { DatakeyFunc } from './ISPUChart';
 import { UNIT_CH4, UNIT_CO2, UNIT_PM } from '@/constants/data';
 

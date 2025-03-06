@@ -1,0 +1,39 @@
+import { useUser } from '@/context/user/useUser';
+import { ButtonProps, HStack, Text } from '@chakra-ui/react'; //prettier-ignore
+import { IconBuildingFactory2 } from '@tabler/icons-react';
+import CompanyIcon from '@/components/display/CompanyIcon';
+import SelectFromDataTable from './SelectFromDataTable';
+
+interface FindCompanies extends ButtonProps {
+	_value?: Record<string, any>;
+	_onChange: (v: Record<string, any>) => any;
+}
+
+export function SelectFromDataTableCompanies({
+	_value,
+	_onChange,
+	...rest
+}: FindCompanies) {
+	const { roleIs, user } = useUser();
+
+	const findCompaniesURL = roleIs(['admin', 'gov'])
+		? '/companies?view=simple'
+		: `/users/${user.id}/companies?view=simple`;
+
+	return (
+		<SelectFromDataTable
+			leftIcon={<IconBuildingFactory2 size="30" />}
+			itemName="Perusahaan"
+			_value={_value}
+			_onChange={_onChange}
+			apiUrl={findCompaniesURL}
+			displayRow={(e: any) => (
+				<HStack>
+					<CompanyIcon bg="white" type={e.type} />
+					<Text children={e?.name || 'Node yang Anda ikuti'} />
+				</HStack>
+			)}
+			{...rest}
+		/>
+	);
+}

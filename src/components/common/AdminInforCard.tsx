@@ -1,4 +1,4 @@
-import { ChangeActiveDashboard } from '@/components/common/ChangeActiveDashButton';
+import { ChangeActiveDashboard } from '@/components/button/ChangeActiveDashButton';
 import { Box, Card, CardBody, CardHeader, CardProps, HStack, Heading, Icon, Text } from '@chakra-ui/react'; //prettier-ignore
 import { IconInfoHexagon } from '@tabler/icons-react'; //prettier-ignore
 

@@ -1,23 +1,46 @@
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-type useHashBasedTabsIndex = ( hashTabs: string[]) => [number, (i: number) => void]; //prettier-ignore
-
-export const useHashBasedTabsIndex: useHashBasedTabsIndex = (hashTabs) => {
+export const useHashBasedTabsIndex = (hashTabs: string[]) => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const [tabIndex, setTabIndex] = useState(-1);
+	const [tabIndex, setTabIndex] = useState(0);
 
 	useEffect(() => {
 		const index = hashTabs.indexOf(location.hash.slice(1));
 		setTabIndex(index == -1 ? 0 : index);
-	}, [location]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const handleTabsChange = (i: number) => {
-		setTabIndex(i);
 		navigate('#' + hashTabs[i]);
+		setTabIndex(i);
 	};
 
-	return [tabIndex, handleTabsChange];
+	return [tabIndex, handleTabsChange] as const;
+};
+
+export const usePathnameBasedTabsIndex = (
+	hashTabs: string[],
+	opt: { navigationPrefix: string },
+) => {
+	const location = useLocation();
+	const navigate = useNavigate();
+	const navigationPrefix = opt?.navigationPrefix || '#';
+	const [tabIndex, setTabIndex] = useState(-1);
+
+	useEffect(() => {
+		const currentTab = location.pathname.split('/').at(-1);
+		const index = currentTab ? hashTabs.indexOf(currentTab) : -1;
+		setTabIndex(index == -1 ? 0 : index);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const handleTabsChange = (i: number) => {
+		navigate(navigationPrefix + hashTabs[i]);
+		setTabIndex(i);
+	};
+
+	return [tabIndex, handleTabsChange] as const;
 };

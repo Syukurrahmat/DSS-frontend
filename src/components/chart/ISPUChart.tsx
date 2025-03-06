@@ -1,5 +1,5 @@
-import { eventLogsTypeAttr } from '@/constants/enumVariable';
-import { ISPUColor, getISPUProperties } from '@/utils/common.utils';
+import { eventLogsTypeAttr } from '@/constants/constantsAttributes';
+import { ISPUColor, getISPUProperties } from '@/lib/common.utils';
 import { Box, HStack, Text } from '@chakra-ui/react'; //prettier-ignore
 import moment from 'moment';
 import { useState } from 'react';

@@ -1,4 +1,4 @@
-import { companyTypeAttr } from '@/constants/enumVariable';
+import { companyTypeAttr } from '@/constants/constantsAttributes';
 import {
 	Avatar,
 	Box,
@@ -18,7 +18,7 @@ interface IManagerCard extends BoxProps {
 
 export default function UserCard({ data, label, ...rest }: IManagerCard) {
 	return (
-		<Link to={'../users/' + data.userId}>
+		<Link to={'../users/' + data.id}>
 			<HStack
 				spacing="3"
 				shadow="xs"
@@ -65,7 +65,7 @@ export function CompanyCard({
 	const { icon, name, color } = companyTypeAttr[data.type!]
 
 	return (
-		<Link to={'../companies/' + data.companyId}>
+		<Link to={'../companies/' + data.id}>
 			<HStack
 				spacing="3"
 				shadow="xs"

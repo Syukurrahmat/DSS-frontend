@@ -1,12 +1,14 @@
-import InputSearch from '@/components/Form/inputSearch';
-import MyMap from '@/components/Maps';
-import { useMyToasts } from '@/utils/common.utils';
-import { fetcher, myAxios } from '@/utils/fetcher';
+import InputSearch from '@/components/input/inputSearch';
+import MapView from '@/components/maps';
+import useMyToasts  from '@/hooks/useMyToast';
+import { fetcher, myAxios } from '@/lib/fetcher.utils';
 import { Box, BoxProps, Button, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Skeleton, Stack, Tag, TagCloseButton, TagLabel, Text, VStack, useDisclosure } from '@chakra-ui/react'; //prettier-ignore
 import qs from 'qs';
 import { useState } from 'react';
 import useSWR, { mutate } from 'swr';
-import { generateNodesMarkerForNodeSubs } from '../Maps/marker/MarkerForNodeSubs';
+// import { generateNodesMarkerForNodeSubs } from '../maps/marker/MarkerForNodeSubs';
+// import { generateNodesMarkerForNodeSubs } from '../Maps/marker/MarkerForNodeSubs';
+// generateNodesMarkerForNodeSubs
 
 interface NodeSubs extends BoxProps {
 	subsInfo:
@@ -226,18 +228,14 @@ interface FindInMapElement {
 
 function FindInMapElement(props: FindInMapElement) {
 	const { selectedNodes, companyData, onSelectChange, apiURL } = props;
-	const { data } = useSWR<NodeData[]>(apiURL, fetcher);
+	const { data } = useSWR<NodeData[]>(apiURL);
 
 	return (
 		<>
-			<MyMap
+			<MapView
 				focusInOneCompany
 				companiesData={companyData ? [companyData] : []}
-				marker={generateNodesMarkerForNodeSubs(
-					selectedNodes,
-					onSelectChange
-				)}
-				data={data || []}
+				nodesData={data || []}
 				as={data ? undefined : Skeleton}
 				centerAuto={false}
 			/>

@@ -2,27 +2,24 @@ import { useCallback, useEffect, useState } from 'react';
 import { Marker, useMap } from 'react-leaflet';
 import Supercluster, { ClusterProperties } from 'supercluster';
 import useSupercluster from 'use-supercluster';
-import { fetchIcon } from './marker/IconMarker';
-import './maps.css';
-import MyMarker from './marker';
+import MarkerList, { MarkerType } from './marker';
+import { getSuperClusterIcon } from './marker/SuperClusterMarker';
+import { AnyDataWithLatLng, MapViewData, SuperClusterData } from './types';
 
-interface ISuperCluster {
-	data: DataWithCoordinate[];
-	MarkerType: any;
+export interface SuperClusterProps<T extends {}> {
+	data: SuperClusterData<T>[];
 }
 
-export type SCProperties<T> =
-	| (T & ClusterProperties)
-	| (ClusterProperties & Supercluster.AnyProps);
+type useUserClusterPropType = SuperClusterData<{}> & ClusterProperties;
+export type SCProperties<T> = (T & ClusterProperties) | (ClusterProperties & Supercluster.AnyProps);
 
-export default function MySuperCluster({ data, MarkerType }: ISuperCluster) {
+export default function MySuperCluster({ data }: SuperClusterProps<{}>) {
 	const maxZoom = 22;
 	const [bounds, setBounds] = useState<number[]>();
 	const [zoom, setZoom] = useState(12);
-
 	const map = useMap();
 
-	const updateMap = () => {
+	const updateMap = useCallback(() => {
 		const b = map.getBounds();
 		setBounds([
 			b.getSouthWest().lng,
@@ -31,7 +28,7 @@ export default function MySuperCluster({ data, MarkerType }: ISuperCluster) {
 			b.getNorthEast().lat,
 		]);
 		setZoom(map.getZoom());
-	};
+	}, [map, setZoom, setBounds]);
 
 	const onMove = useCallback(() => {
 		updateMap();
@@ -48,19 +45,17 @@ export default function MySuperCluster({ data, MarkerType }: ISuperCluster) {
 		};
 	}, [map, onMove]);
 
-	type useUserClusterPropType = DataWithCoordinate & ClusterProperties;
-
 	const { clusters, supercluster } = useSupercluster<useUserClusterPropType>({
 		// @ts-ignore
 		points: data.map((point) => ({
 			type: 'Feature',
 			properties: {
-				cluster_id: point.nodeId,
+				cluster_id: point.id,
 				...point,
 			},
 			geometry: {
 				type: 'Point',
-				coordinates: [point.coordinate[1], point.coordinate[0]],
+				coordinates: [point.coordinate.lng, point.coordinate.lat],
 			},
 		})),
 		bounds: bounds as any,
@@ -83,16 +78,13 @@ export default function MySuperCluster({ data, MarkerType }: ISuperCluster) {
 						<Marker
 							key={clusterId}
 							position={[latitude, longitude]}
-							icon={fetchIcon(
-								pointCount,
-								20 + (pointCount / data.length) * 40
-							)}
+							icon={getSuperClusterIcon(pointCount, data.length)}
 							eventHandlers={{
 								click: () => {
 									const expansionZoom = Math.min(
 										// @ts-ignore
 										supercluster.getClusterExpansionZoom(clusterId),
-										maxZoom
+										maxZoom,
 									);
 									map.setView([latitude, longitude], expansionZoom, {
 										animate: true,
@@ -103,23 +95,12 @@ export default function MySuperCluster({ data, MarkerType }: ISuperCluster) {
 					);
 				}
 
-				return properties.companyId ? (
-					<MyMarker.CompanyMarker
-						key={'comp-' + properties.companyId}
+				const MarkerComponent = MarkerList[properties.marker as MarkerType];
+				return (
+					<MarkerComponent
+						key={properties.marker + '-' + properties.id}
 						position={[latitude, longitude]}
-						properties={properties}
-					/>
-				) : properties.reportId ? (
-					<MarkerType
-						key={'report-' + properties.reportId}
-						position={[latitude, longitude]}
-						properties={properties}
-					/>
-				) : (
-					<MarkerType
-						key={'node-' + properties.nodeId}
-						position={[latitude, longitude]}
-						properties={properties}
+						properties={properties as any}
 					/>
 				);
 			})}

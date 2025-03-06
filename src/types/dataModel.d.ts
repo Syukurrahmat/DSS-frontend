@@ -1,116 +1,78 @@
-type UserRole = 'regular' | 'gov' | 'admin' | 'manager'
+import { CompanyType, NodeStatus, NodeType, UserRole } from '@/constants/data';
 
-type UserData = {
-	userId: number;
-	name: string;
-	phone: string;
-	role: string;
-	profilePicture: string | undefined
-	email: string;
-	createdAt: string;
-	role: userRole
-}
+type UsersOverview = {
+	totalUsers: number;
+	roles: { role: UserRole; count: number }[];
+	verifiedUsers: number;
+	unverifiedUsers: number;
+};
 
-type CompanyData = {
-	companyId: number;
+type CompaniesOverview = {
+	totalCompany: number;
+	types: { type: CompanyType; count: number }[];
+};
+
+type NodesOverview = {
+	totalNodes: number;
+	ownship: { ownship: NodeType; count: number }[];
+	status: { status: NodeStatus; count: number }[];
+};
+
+type CompanyItem = {
+	id: number;
 	managedBy: number;
 	name: string;
-	coordinate: number[],
+	coordinate: number[];
 	address: string;
-	type: string;
+	type: CompanyType;
 	createdAt: string;
 	indoorNodeValue?: {
-		name: string,
+		name: string;
 		data: {
-			name: string,
-			datetime: string,
-			value: number
-		}
-	}[]
+			name: string;
+			datetime: string;
+			value: number;
+		};
+	}[];
 	indoorNodes?: {
 		isUptodate: boolean;
 		nodeId: number;
 		companyId: number;
 		name: string;
-		status: string;
+		status: NodeStatus;
 		lastDataSent: string;
 		createdAt: string;
-	}[]
+	}[];
 	manager: {
 		userId: number;
 		name: string;
 	};
-}
+};
 
-type NodeData = {
-	nodeId: number;
-	companyId: number | null
+type NodeItem = {
+	id: number;
+	companyId: number | null;
 	name: string;
 	address: string;
-	ownerId: number | undefined,
-	coordinate: number[]
+	ownerId: number | undefined;
+	coordinate: number[];
 	isUptodate: boolean;
 	lastDataSent: string | undefined;
 	createdAt: string;
-	isCompanyLocation?: boolean
-	isSubscribed?: boolean,
+	isCompanyLocation?: boolean;
+	isSubscribed?: boolean;
 	owner?: {
-		name: string,
-		companyId: number,
-		type: string,
-	}
-}
-
-
-type userOfGroupData = {
-	userId: number;
-	name: string;
-	profilePicture: string;
-	GroupPermissions: {
-		permission: 'member' | 'manager';
-		joinedAt: string;
-		requestStatus: 'approved' | 'pending' | 'rejected';
-		requestJoinAt: string,
-	}
-
-}
-
-
-// ================
-
-
-
-type companySub = {
-	CompanySubscriptions: {
-		companySubscriptionId: number;
-		createdAt: string;
+		name: string;
+		companyId: number;
+		type: string;
 	};
-}
-
-type userSub = {
-	UsersSubscriptions: {
-		usersSubscriptionId: number,
-		createdAt: string,
-	},
-}
-
-// ================
-
-
-
-type searchUserWithSubsResult = {
-	userId: number
-	profilePicture: string
-	name: string
-	isInGroup: boolean
-}
+};
 
 type searchGroupWithSubsResult = {
-	nodeId: number
-	name: string
-	subscription?: string
-}
-
+	nodeId: number;
+	name: string;
+	subscription?: string;
+};
 
 type DetailEventLog = {
 	eventLogId: number;
@@ -123,7 +85,7 @@ type DetailEventLog = {
 	endDate: string;
 	description: string;
 	location: string;
-}
+};
 
 type CurrentEventLogs = {
 	complete: {
@@ -138,7 +100,7 @@ type CurrentEventLogs = {
 		count: number;
 		events: DTEventLog[];
 	};
-}
+};
 
 // type DataPageData = {
 // 	success: boolean;
@@ -152,7 +114,6 @@ type CurrentEventLogs = {
 // 		dataLogs: DTDatalog[];
 // 	};
 // }
-
 
 type DownloadDataResponse = {
 	startDate: string;
